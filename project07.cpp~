@@ -1,0 +1,241 @@
+/***********************************************************************
+* Program:
+*    Project 07, Calendar
+*    Brother Christensen, CS124
+* Author:
+*    Brendon Marques
+* Summary: 
+*    Enter a brief description of your program here!  Please note that if
+*    you do not take the time to fill out this block, YOU WILL LOSE POINTS.
+*    Before you begin working, estimate the time you think it will
+*    take you to do the assignment and include it in this header block.
+*    Before you submit the assignment include the actual time it took.
+*
+*    Estimated:  4.0 hrs   
+*    Actual:     0.0 hrs
+*      Please describe briefly what was the most difficult part.
+************************************************************************/
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int promptMonth()
+{
+   int month;
+   
+   do
+   {      
+      cout << "Enter a month number: ";
+      cin >> month;
+      
+      if (month < 1 || month > 12)
+         
+         cout << "Month must be between 1 and 12.\n";
+   }   
+   while (month < 1 || month > 12);
+   
+   return month;
+}
+
+int promptYear()
+{
+   int year;
+
+   do
+   {
+      cout << "Enter year: ";
+      cin >> year;
+
+      if (year < 1753)
+
+         cout << "Year must be 1753 or later.\n";
+   }
+   while (year < 1753);
+   
+   return year;
+}
+
+
+bool isLeapYear(int year)
+{
+   if (year % 4 == 0 && year % 100 != 0 ||
+       year % 100 == 0 && year % 400 == 0 ||
+       year % 400 == 0)
+
+      return true;
+
+   else
+      
+      return false;
+}
+
+int getDaysInYear(int year)
+{
+   int numDaysYear = 0;
+
+   for (int y = 1753; y < year; y++)
+   {
+      if (isLeapYear(y) != true)
+        
+         numDaysYear += 365;
+
+      else
+
+         numDaysYear += 366;
+   }
+
+      return numDaysYear;
+}
+
+int getDaysInMonth(int month, int year)
+{
+   int numDaysMonth = 0;
+
+   for (int m = 1; m < month; m++)
+   {
+      if (m == 1 ||
+          m == 3 ||
+          m == 5 ||
+          m == 7 ||
+          m == 8 ||
+          m == 10 ||
+          m == 12)
+      
+         numDaysMonth += 31;
+         
+         else if (m == 4 ||
+                  m == 6 ||
+                  m == 9 ||
+                  m == 11)
+         
+            numDaysMonth += 30;
+               
+            else if (m == 2 && isLeapYear(year) == true)
+                     
+               numDaysMonth += 29;
+                     
+               else
+                           
+                  numDaysMonth += 28;
+   }
+   
+   return numDaysMonth;
+}
+
+
+int computeOffSet(int numDaysMonth, int numDaysYear)
+{
+   return (numDaysMonth + numDaysYear) % 7;
+}
+ 
+ 
+int numDays(int month, int year)
+{
+   int numDays = 0;
+   
+   if (month == 1 ||
+       month == 3 ||
+       month == 5 ||
+       month == 7 ||
+       month == 8 ||
+       month == 10 ||
+       month == 12)
+      
+      numDays = 31;
+      
+      else if (month == 4 ||
+               month == 6 ||
+               month == 9 ||
+               month == 11)
+            
+         numDays = 30;
+            
+         else if (month == 2 && isLeapYear(year) == true)
+                  
+            numDays = 29;
+                  
+            else
+                        
+               numDays = 28;
+
+   return numDays;      
+}
+
+void getNameofMonth(int month, char nameMonth[256])
+{
+   if (month == 1)
+
+      nameMonth = "January";
+
+   else if (month == 2)
+
+      nameMonth = "February";
+
+   else if (month == 3)
+
+      nameMonth = "March";
+
+   else if (month == 4)
+
+      nameMonth = "April";
+
+   else if (month == 5)
+
+      nameMonth = "May";
+
+}
+
+void displayTable(int offSet, int daysCounted, int month, int year)
+{
+   cout << endl;
+
+   char nameMonth[256];
+   cout << getNameofMonth(month, nameMonth) << ", " << year << endl;
+   cout << "  Su  Mo  Tu  We  Th  Fr  Sa" << endl;
+   
+   if (offSet != 6)
+   
+      for (int i = 0; i <=offSet; i++)
+      {
+         cout << "    ";       
+      }
+       
+       for (int i = 1; i <= daysCounted; i++)
+       {
+         cout.setf(ios::fixed);
+       
+         cout << setw(4) << i;
+         
+            if ((i + offSet + 1) % 7 == 0 && i != daysCounted)
+            
+               cout << endl;
+        }
+               
+   cout << endl;
+}         
+
+             
+
+/**********************************************************************
+ * Add text here to describe what the function "main" does. Also don't forget
+ * to fill this out with meaningful text or YOU WILL LOSE POINTS.
+ ***********************************************************************/
+int main()
+{
+   int month = promptMonth();
+   
+   int year = promptYear();
+   
+   int numDaysMonth = getDaysInMonth(month, year);
+   
+   int numDaysYear = getDaysInYear(year);
+   
+   int offSet = computeOffSet(numDaysMonth, numDaysYear);
+   
+   int daysCounted = numDays(month, year);
+   
+   displayTable(offSet, daysCounted, month, year);
+  
+   return 0;
+}

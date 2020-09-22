@@ -1,0 +1,97 @@
+/***********************************************************************
+* Program:
+*    Assignment ##, ????          (e.g. Assignment 10, Hello World)
+*    Brother Christensen, CS124
+* Author:
+*    Brendon Marques
+* Summary: 
+*    Enter a brief description of your program here!  Please note that if
+*    you do not take the time to fill out this block, YOU WILL LOSE POINTS.
+*    Before you begin working, estimate the time you think it will
+*    take you to do the assignment and include it in this header block.
+*    Before you submit the assignment include the actual time it took.
+*
+*    Estimated:  0.0 hrs   
+*    Actual:     0.0 hrs
+*      Please describe briefly what was the most difficult part.
+************************************************************************/
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+void promptFile(char filename[])
+{
+   cout << "What is the name of the file: ";
+   cin >> filename;
+}
+
+int readFile(float data[], char filename[])
+{
+   ifstream fin(filename);
+   if (fin.fail())
+   {
+      cout << "Error reading the file." << endl;
+
+      return -1;
+   }
+
+   int count = 0;
+   
+   for (int i = 0; !fin.eof(); i++)
+   {
+      fin >> data[i];
+
+      count++;
+   }
+
+   fin.close();
+
+   return count - 1;
+}
+
+float getThreshold()
+{
+   cout << "What is the threshold: ";
+   float threshold;
+   cin >> threshold;
+
+   return threshold;
+}
+
+void display(float threshold, float data[], int count)
+{
+   cout.setf(ios::fixed);
+   cout.setf(ios::showpoint);
+   cout.precision(1);
+   
+   cout << "The following items are below the threshold:" << endl;
+
+   for (int i = 0; i < count; i++)
+   {
+      if (data[i] < threshold)
+
+         cout << "\t" << data[i] << endl;
+   }
+}
+
+/**********************************************************************
+ * Add text here to describe what the function "main" does. Also don't forget
+ * to fill this out with meaningful text or YOU WILL LOSE POINTS.
+ ***********************************************************************/
+int main()
+{
+   char filename[256];
+   promptFile(filename);
+
+   float threshold = getThreshold();
+   
+   float data[256];
+   
+   int count = readFile(data, filename);
+
+   display(threshold, data, count);
+   
+   return 0;
+}

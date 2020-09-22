@@ -1,0 +1,88 @@
+/***********************************************************************
+* Program:
+*    Test 2, Guessing Game          (e.g. Test 2, Flip a coin)  
+*    Brother Christensen, CS124
+* Author:
+*    Brendon Marques
+* Summary: 
+*    Enter a brief description of your program here!  Please note that if
+*    you do not take the time to fill out this block, YOU WILL LOSE POINTS.
+*    Before you begin working, estimate the time you think it will
+*    take you to do the assignment and include it in this header block.
+*
+************************************************************************/
+
+#include <iostream>   // for CIN, COUT
+#include <ctime>      // for time(), part of the random process
+#include <stdlib.h>   // for rand() and srand()
+using namespace std;
+
+int promptNumber();
+void display(int count);
+void displayHigh();
+void displayLow();
+
+/**********************************************************************
+ * Add text here to describe what the function "main" does. Also don't forget
+ * to fill this out with meaningful text or YOU WILL LOSE POINTS.
+ ***********************************************************************/
+int main(int argc, char **argv)
+{
+   
+   // this code is necessary to set up the random number generator. If
+   // your program uses a random number generator, you will need this 
+   // code. Otherwise, you can safely delete it.  Note: this must go in main()
+   srand(argc == 1 ? time(NULL) : (int)argv[1][1]);
+
+   // this code will actually generate a random number between 0 and 999
+   int number = rand() % 1000;
+
+
+   int count = 0;
+   int guess;
+   do
+   {
+      guess = promptNumber();
+
+      count++;
+
+      if (guess > number)
+
+         displayHigh();
+
+      else if (guess < number)
+
+         displayLow();
+      
+   }
+   while (guess != number);
+
+   display(count);      
+      
+   return 0;
+   
+}
+
+int promptNumber()
+{
+   int guess;
+   cout << "What is your guess: ";
+   cin >> guess;
+
+   return guess;
+}
+
+void displayHigh()
+{
+   cout << "Too high\n";
+}
+
+void displayLow()
+{
+   cout << "Too low\n";
+}
+
+void display(int count)
+{
+   cout << "You guessed it in " << count << " tries\n";
+}
